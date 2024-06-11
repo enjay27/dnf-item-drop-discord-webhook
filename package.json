@@ -1,0 +1,19 @@
+{
+  "name": "dnf-webhook",
+  "version": "1.0.0",
+  "description": "dnf item acquire notice using DNF API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/enjay27/dnf-item-drop-discord-webhook.git"
+  },
+  "author": "Kade",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/enjay27/dnf-item-drop-discord-webhook/issues"
+  },
+  "homepage": "https://github.com/enjay27/dnf-item-drop-discord-webhook#readme"
+}
