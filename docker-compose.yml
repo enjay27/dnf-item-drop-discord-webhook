@@ -1,0 +1,10 @@
+services:
+  dnf-timeline-discord-webhook:
+    image: "enjay27/dnf-timeline-discord-webhook"
+    environment:
+      # https://discordjs.guide/popular-topics/webhooks.html#creating-webhooks-through-server-settings
+      - DISCORD_WEBHOOK_ID=YOUR_DISCORD_WEBHOOK_ID
+      - DISCORD_WEBHOOK_TOKEN=YOUR_DISCORD_WEBHOOK_TOKEN
+      # https://developers.neople.co.kr/contents/guide/pages/all#%EC%98%A4%ED%94%88-api-%EC%8B%9C%EC%9E%91%ED%95%98%EA%B8%B0
+      - DNF_API_KEY=YOUR_DNF_API_KEY
+      - INTERVAL_MIN=5
