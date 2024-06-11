@@ -43,7 +43,9 @@ const start = async () => {
 }
 
 const t = async (adventurer) => {
-    const response = await axios.post(`https://dundam.xyz/dat/searchData.jsp?name=${adventurer}&server=adven`)
+    const response = await axios.post(`https://dundam.xyz/dat/searchData.jsp?name=${adventurer}&server=adven`, {}, {
+        timeout: 60000
+    })
     return response.data.characters.filter(r => r.fame > 51693).map(r => {
         return {
             "name": r.name,
@@ -73,7 +75,8 @@ const getItemAcquire = async (itemAcquireInfo, server, characterId) => {
             apikey: 'UT3yzmFGRFKctbwp0g21lKt8IJbHeloK',
             startDate: new Date(Date.now() - process.env.INTERVAL_MIN * 60 * 1000),
             endDate: new Date()
-        }
+        },
+        timeout: 60000
     });
     return archiveResponse.data.timeline.rows.filter(r => r.data.itemRarity === '태초');
 }
