@@ -35,7 +35,7 @@ https://developers.neople.co.kr/contents/guide/pages/all#%EC%98%A4%ED%94%88-api-
 DISCORD_WEBHOOK_ID=YOUR_DISCORD_WEBHOOK_ID
 DISCORD_WEBHOOK_TOKEN=YOUR_DISCORD_WEBHOOK_TOKEN
 DNF_API_KEY=YOUR_DNF_API_KEY
-INTERVAL_MIN=5
+INTERVAL_MIN=2
 ```
 env file 에 발급받은 Webhook, API Key 의 값을 채우면 됩니다. 
 
