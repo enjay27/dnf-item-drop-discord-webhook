@@ -75,7 +75,7 @@ const sendDiscordMessage = async (request) => {
         description += `${request.channelName} ${request.channelNo}채널`
     }
     const embed = new EmbedBuilder()
-        .setTitle(process.env.MESSAGE_TITLE)
+        .setTitle("👀 누군가가 태초를 먹었음")
         .setTimestamp(Date.parse(request.when))
         .setDescription(description)
         .setColor(0xFFFF00);
