@@ -9,15 +9,15 @@ const webhookClient = new WebhookClient({id: process.env.DISCORD_WEBHOOK_ID, tok
 const itemAcquireInfoList = [
     {
         "code": 513,
-        "name": "별무리"
+        "name": "🗝기록실"
     },
     {
         "code": 505,
-        "name": "서고"
+        "name": "📚서고"
     },
     {
         "code": 504,
-        "name": "기록실"
+        "name": "🌟별무리"
     }
 ]
 
