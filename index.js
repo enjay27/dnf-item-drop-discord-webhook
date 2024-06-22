@@ -1,6 +1,7 @@
 const {EmbedBuilder, WebhookClient} = require('discord.js');
 const axios = require('axios');
 const cron = require('node-cron');
+const waait = require('waait');
 require('dotenv').config();
 const adventurers = require('./adventurers.json');
 
@@ -9,40 +10,53 @@ const webhookClient = new WebhookClient({id: process.env.DISCORD_WEBHOOK_ID, tok
 const itemAcquireInfoList = [
     {
         "code": 513,
-        "name": "별무리"
+        "name": "🔑기록실"
     },
     {
         "code": 505,
-        "name": "서고"
+        "name": "📚서고"
     },
     {
         "code": 504,
-        "name": "기록실"
+        "name": "🌟별무리"
     }
 ]
 
+const itemMap = new Map();
+
 const start = async () => {
     for (const adventurer of adventurers) {
-        const characters = await t(adventurer.name);
+        const characters = await getAdventurers(adventurer.name);
+        await waait(500);
         for (const character of characters) {
             for (const itemAcquireInfo of itemAcquireInfoList) {
                 const itemAcquire = await getItemAcquire(itemAcquireInfo, character.server, character.id);
                 if (itemAcquire.length !== 0)
                     console.log(itemAcquire);
                 for (const item of itemAcquire) {
-                    await sendDiscordMessage({
-                        "where": itemAcquireInfo.name,
-                        "when": itemAcquire.date,
-                        "who": character.name,
-                        "what": itemAcquire.data.itemName
-                    })
+                    let key = item.date + item.data.itemName;
+                    if (!itemMap.has(key)) {
+                        let request = {
+                            "where": itemAcquireInfo.name,
+                            "when": item.date,
+                            "who": character.name,
+                            "what": item.data.itemName,
+                            "channelName": item.data.channelName,
+                            "channelNo": item.data.channelNo
+                        };
+                        await sendDiscordMessage(request)
+                        itemMap.set(key, request);
+                        setTimeout(() => {
+                            itemMap.delete(key);
+                        }, 1000 * 60 * 60);
+                    }
                 }
             }
         }
     }
 }
 
-const t = async (adventurer) => {
+const getAdventurers = async (adventurer) => {
     const response = await axios.post(`https://dundam.xyz/dat/searchData.jsp?name=${adventurer}&server=adven`, {}, {
         timeout: 60000
     })
@@ -56,11 +70,15 @@ const t = async (adventurer) => {
 }
 
 const sendDiscordMessage = async (request) => {
+    let description = `\n${request.who} - ${request.where} 에서 **${request.what}** 먹었음\n`
+    if (request.channelName && request.channelNo) {
+        description += `${request.channelName} ${request.channelNo}채널`
+    }
     const embed = new EmbedBuilder()
-        .setTitle('누군가가 태초를 먹었음')
+        .setTitle(process.env.MESSAGE_TITLE)
         .setTimestamp(Date.parse(request.when))
-        .setDescription(`${request.who} - ${request.where} 에서 먹었음`)
-        .setColor(0x00FFFF);
+        .setDescription(description)
+        .setColor(0xFFFF00);
 
     webhookClient.send({
         embeds: [embed],
@@ -72,12 +90,13 @@ const getItemAcquire = async (itemAcquireInfo, server, characterId) => {
         params: {
             limit: 100,
             code: itemAcquireInfo.code,
-            apikey: 'UT3yzmFGRFKctbwp0g21lKt8IJbHeloK',
-            startDate: new Date(Date.now() - process.env.INTERVAL_MIN * 60 * 1000),
+            apikey: process.env.DNF_API_KEY,
+            startDate: new Date(Date.now() - 10 * 60 * 1000),
             endDate: new Date()
         },
         timeout: 60000
     });
+    await waait(500);
     return archiveResponse.data.timeline.rows.filter(r => r.data.itemRarity === '태초');
 }
 
