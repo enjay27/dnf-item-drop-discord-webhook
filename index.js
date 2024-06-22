@@ -10,7 +10,7 @@ const webhookClient = new WebhookClient({id: process.env.DISCORD_WEBHOOK_ID, tok
 const itemAcquireInfoList = [
     {
         "code": 513,
-        "name": "🗝기록실"
+        "name": "🔑기록실"
     },
     {
         "code": 505,
@@ -48,7 +48,7 @@ const start = async () => {
                         itemMap.set(key, request);
                         setTimeout(() => {
                             itemMap.delete(key);
-                        }, 1000 * 60 * 60 * 3);
+                        }, 1000 * 60 * 60);
                     }
                 }
             }
@@ -91,7 +91,7 @@ const getItemAcquire = async (itemAcquireInfo, server, characterId) => {
             limit: 100,
             code: itemAcquireInfo.code,
             apikey: process.env.DNF_API_KEY,
-            startDate: new Date(Date.now() - 3 * 60 * 60 * 1000),
+            startDate: new Date(Date.now() - 10 * 60 * 1000),
             endDate: new Date()
         },
         timeout: 60000
