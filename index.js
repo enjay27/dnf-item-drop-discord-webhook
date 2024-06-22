@@ -90,7 +90,7 @@ const getItemAcquire = async (itemAcquireInfo, server, characterId) => {
         params: {
             limit: 100,
             code: itemAcquireInfo.code,
-            apikey: 'UT3yzmFGRFKctbwp0g21lKt8IJbHeloK',
+            apikey: process.env.DNF_API_KEY,
             startDate: new Date(Date.now() - 3 * 60 * 60 * 1000),
             endDate: new Date()
         },
